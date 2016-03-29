@@ -1,0 +1,38 @@
+{
+	"name": "kdyby/strict-objects",
+	"type": "library",
+	"description": "Simple trait to make your class strict, when calling or accessing undefined member (property or method).",
+	"keywords": ["kdyby", "doctrine", "orm", "dbal", "magic", "accessors"],
+	"homepage": "http://kdyby.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Filip Procházka",
+			"homepage": "http://filip-prochazka.com",
+			"email": "filip@prochazka.su"
+		}
+	],
+	"support": {
+		"email": "filip@prochazka.su",
+		"issues": "https://github.com/Kdyby/StrictObjects/issues"
+	},
+	"require": {
+		"php": ">=5.4"
+	},
+	"require-dev": {
+		"nette/tester": "~1.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"Kdyby\\StrictObjects\\": "src/"
+		},
+		"classmap": [
+			"src/exceptions.php"
+		]
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests"
+		]
+	}
+}
