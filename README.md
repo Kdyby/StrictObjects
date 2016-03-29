@@ -25,7 +25,7 @@ Usage
 
 Simply include the trait in your class and it will behave strictly!
 
-```
+```php
 class MyClass
 {
 	use \Kdyby\StrictObjects\Scream;
