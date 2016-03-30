@@ -2,7 +2,7 @@
 	"name": "kdyby/strict-objects",
 	"type": "library",
 	"description": "Simple trait to make your class strict, when calling or accessing undefined member (property or method).",
-	"keywords": ["kdyby", "doctrine", "orm", "dbal", "magic", "accessors"],
+	"keywords": ["kdyby", "strict", "object", "scream", "magic", "accessors", "properties", "methods", "members", "exceptions"],
 	"homepage": "http://kdyby.org",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
