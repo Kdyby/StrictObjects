@@ -28,8 +28,8 @@ trait Scream
 	 */
 	public function __call($name, $args)
 	{
-		$class = get_class($this);
-		$hint = Suggester::suggestMethod($class, $name);
+		$class = method_exists($this, $name) ? 'parent' : get_class($this);
+		$hint = Suggester::suggestMethod(get_class($this), $name);
 		throw new MemberAccessException("Call to undefined method $class::$name()" . ($hint ? ", did you mean $hint()?" : '.'));
 	}
 
