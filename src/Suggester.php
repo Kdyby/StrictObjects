@@ -10,9 +10,6 @@
 
 namespace Kdyby\StrictObjects;
 
-use Kdyby;
-use Nette;
-
 
 
 /**
