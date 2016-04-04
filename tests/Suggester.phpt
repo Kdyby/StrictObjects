@@ -66,6 +66,68 @@ class SuggesterTest extends Tester\TestCase
 		Assert::same($expected, Suggester::getSuggestion($items, $value));
 	}
 
+
+
+	public function dataSuggestMethod()
+	{
+		return [
+			['someBar', 'someBaz'],
+			[NULL, 'bar'],
+			[NULL, 'Bar'],
+			[NULL, 'staBaz'], // doesn't suggest static functions
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider dataSuggestMethod
+	 */
+	public function testSuggestMethod($expected, $calledMethod)
+	{
+		Assert::same($expected, Suggester::suggestMethod('KdybyTests\StrictObjects\SomeObject', $calledMethod));
+	}
+
+
+
+	public function dataSuggestStaticFunction()
+	{
+		return [
+			['staBar', 'staBaz'],
+			[NULL, 'someBaz'], // doesn't suggest methods
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider dataSuggestStaticFunction
+	 */
+	public function testSuggestStaticFunction($expected, $calledFunction)
+	{
+		Assert::same($expected, Suggester::suggestStaticFunction('KdybyTests\StrictObjects\SomeObject', $calledFunction));
+	}
+
+
+
+	public function dataSuggestProperty()
+	{
+		return [
+			['bar', 'baz'],
+			[NULL, 'nupe'], // doesn't suggest static properties
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider dataSuggestProperty
+	 */
+	public function testSuggestProperty($expected, $accessedProperty)
+	{
+		Assert::same($expected, Suggester::suggestProperty('KdybyTests\StrictObjects\SomeObject', $accessedProperty));
+	}
+
 }
 
 

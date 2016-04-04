@@ -26,8 +26,12 @@ final class Suggester
 	 */
 	public static function suggestMethod($class, $method)
 	{
+		$rc = new \ReflectionClass($class);
 		return self::getSuggestion(
-			get_class_methods($class),
+			array_diff(
+				$rc->getMethods(\ReflectionMethod::IS_PUBLIC),
+				$rc->getMethods(\ReflectionMethod::IS_STATIC)
+			),
 			$method
 		);
 	}
@@ -41,12 +45,11 @@ final class Suggester
 	 */
 	public static function suggestStaticFunction($class, $method)
 	{
+		$rc = new \ReflectionClass($class);
 		return self::getSuggestion(
-			array_filter(
-				get_class_methods($class),
-				function ($m) use ($class) {
-					return (new \ReflectionMethod($class, $m))->isStatic();
-				}
+			array_intersect(
+				$rc->getMethods(\ReflectionMethod::IS_PUBLIC),
+				$rc->getMethods(\ReflectionMethod::IS_STATIC)
 			),
 			$method
 		);
@@ -61,8 +64,12 @@ final class Suggester
 	 */
 	public static function suggestProperty($class, $name)
 	{
+		$rc = new \ReflectionClass($class);
 		return self::getSuggestion(
-			array_keys(get_class_vars($class)),
+			array_diff(
+				$rc->getProperties(\ReflectionMethod::IS_PUBLIC),
+				$rc->getProperties(\ReflectionMethod::IS_STATIC)
+			),
 			$name
 		);
 	}
@@ -82,7 +89,9 @@ final class Suggester
 		$norm = preg_replace($re = '#^(get|set|has|is|add)(?=[A-Z])#', '', $value);
 		$best = NULL;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		foreach (array_unique($items) as $item) {
+		foreach (array_unique($items, SORT_REGULAR) as $item) {
+			/** @var \ReflectionProperty|\ReflectionMethod|string $item */
+			$item = $item instanceof \Reflector ? $item->getName() : $item;
 			if ($item !== $value && (
 					($len = levenshtein($item, $value, 10, 11, 10)) < $min
 					|| ($len = levenshtein(preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) < $min

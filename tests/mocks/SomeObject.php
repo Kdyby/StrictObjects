@@ -26,6 +26,8 @@ class SomeObject
 
 	public $bar;
 
+	public static $nope;
+
 
 
 	public function someBar()
