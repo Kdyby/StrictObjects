@@ -46,7 +46,7 @@ trait Scream
 	{
 		$class = get_called_class();
 		$hint = Suggester::suggestStaticFunction($class, $name);
-		throw new MemberAccessException("Call to undefined static method $class::$name()" . ($hint ? ", did you mean $hint()?" : '.'));
+		throw new MemberAccessException("Call to undefined static function $class::$name()" . ($hint ? ", did you mean $hint()?" : '.'));
 	}
 
 

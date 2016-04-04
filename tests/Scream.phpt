@@ -35,7 +35,7 @@ class ScreamTest extends Tester\TestCase
 	{
 		Assert::exception(function () {
 			SomeObject::staBaz();
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Call to undefined static method KdybyTests\StrictObjects\SomeObject::staBaz(), did you mean staBar()?');
+		}, 'Kdyby\StrictObjects\MemberAccessException', 'Call to undefined static function KdybyTests\StrictObjects\SomeObject::staBaz(), did you mean staBar()?');
 	}
 
 
