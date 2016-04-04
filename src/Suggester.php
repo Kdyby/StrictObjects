@@ -14,6 +14,7 @@ namespace Kdyby\StrictObjects;
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
+ * @internal
  */
 final class Suggester
 {
