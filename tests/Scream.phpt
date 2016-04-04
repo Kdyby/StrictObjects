@@ -79,7 +79,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			isset($o->baz);
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot write to an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
+		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot read an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
 	}
 
 }

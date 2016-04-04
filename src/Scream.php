@@ -97,7 +97,7 @@ trait Scream
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
-		throw new MemberAccessException("Cannot write to an undeclared property $class::\$$name" . ($hint ? ", did you mean \$$hint?" : '.'));
+		throw new MemberAccessException("Cannot read an undeclared property $class::\$$name" . ($hint ? ", did you mean \$$hint?" : '.'));
 	}
 
 
