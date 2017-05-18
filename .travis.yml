@@ -13,12 +13,21 @@ php:
   - 7.0
   - 7.1
 
+env:
+  - # dev
+  - COMPOSER_EXTRA_ARGS="--prefer-stable"
+  - COMPOSER_EXTRA_ARGS="--prefer-lowest --prefer-stable"
+
 matrix:
+  fast_finish: true
   include:
-    - php: 5.6
-      env: COMPOSER_EXTRA_ARGS="--prefer-lowest --prefer-stable"
     - php: 7.1
       env: COVERAGE="--coverage ./coverage.xml --coverage-src ./src" TESTER_RUNTIME="phpdbg"
+  exclude:
+    - php: 7.1
+      env: COMPOSER_EXTRA_ARGS="--prefer-stable"
+  allow_failures:
+    - env:
 
 install:
   - travis_retry composer update --no-interaction --no-suggest --no-progress --prefer-dist $COMPOSER_EXTRA_ARGS
