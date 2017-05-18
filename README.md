@@ -8,7 +8,6 @@ Simple trait to make your class strict, when calling or accessing undefined memb
 [![Latest stable](https://img.shields.io/packagist/v/kdyby/strict-objects.svg)](https://packagist.org/packages/kdyby/strict-objects)
 [![Coverage Status](https://coveralls.io/repos/github/Kdyby/StrictObjects/badge.svg?branch=master)](https://coveralls.io/github/Kdyby/StrictObjects?branch=master)
 
-
 This library is heavily inspired by [Nette\ObjectMixin](https://github.com/nette/utils/blob/e8749e5417bf22b0bd999d4b49ee799a5bad5fb9/src/Utils/ObjectMixin.php).
 
 Installation
@@ -19,7 +18,6 @@ The best way to install Kdyby/StrictObjects is using  [Composer](http://getcompo
 ```sh
 $ composer require kdyby/strict-objects
 ```
-
 
 Usage
 -----
@@ -34,7 +32,6 @@ class MyClass
 	// my code
 }
 ```
-
 
 -----
 
