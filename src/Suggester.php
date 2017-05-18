@@ -90,14 +90,15 @@ final class Suggester
 		$best = NULL;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
 		foreach (array_unique($items, SORT_REGULAR) as $item) {
-			/** @var \ReflectionProperty|\ReflectionMethod|string $item */
-			$item = $item instanceof \Reflector ? $item->getName() : $item;
+			/** @var \Reflector|string $item */
+			$item = ($item instanceof \ReflectionProperty || $item instanceof \ReflectionMethod) ? $item->getName() : $item;
 			if ($item !== $value && (
 					($len = levenshtein($item, $value, 10, 11, 10)) < $min
 					|| ($len = levenshtein(preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) < $min
 				)
 			) {
 				$min = $len;
+				/** @var string $best */
 				$best = $item;
 			}
 		}
