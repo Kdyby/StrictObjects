@@ -6,6 +6,7 @@
 
 namespace KdybyTests\Doctrine\MagicAccessors;
 
+use Kdyby;
 use KdybyTests\StrictObjects\SomeObject;
 use Tester;
 use Tester\Assert;
@@ -26,7 +27,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			$o->someBaZ();
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Call to undefined method KdybyTests\StrictObjects\SomeObject::someBaZ(), did you mean someBar()?');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Call to undefined method KdybyTests\StrictObjects\SomeObject::someBaZ(), did you mean someBar()?');
 	}
 
 
@@ -35,7 +36,7 @@ class ScreamTest extends Tester\TestCase
 	{
 		Assert::exception(function () {
 			SomeObject::staBaz();
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Call to undefined static function KdybyTests\StrictObjects\SomeObject::staBaz(), did you mean staBar()?');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Call to undefined static function KdybyTests\StrictObjects\SomeObject::staBaz(), did you mean staBar()?');
 	}
 
 
@@ -46,7 +47,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			$o->baz;
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot read an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Cannot read an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
 	}
 
 
@@ -57,7 +58,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			$o->baz = 'value';
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot write to an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Cannot write to an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
 	}
 
 
@@ -68,7 +69,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			unset($o->baz);
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot unset the property KdybyTests\StrictObjects\SomeObject::$baz.');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Cannot unset the property KdybyTests\StrictObjects\SomeObject::$baz.');
 	}
 
 
@@ -79,7 +80,7 @@ class ScreamTest extends Tester\TestCase
 
 		Assert::exception(function () use ($o) {
 			isset($o->baz);
-		}, 'Kdyby\StrictObjects\MemberAccessException', 'Cannot read an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
+		}, Kdyby\StrictObjects\MemberAccessException::class, 'Cannot read an undeclared property KdybyTests\StrictObjects\SomeObject::$baz, did you mean $bar?');
 	}
 
 }
