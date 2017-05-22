@@ -20,7 +20,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
-      env: COVERAGE="--coverage ./coverage.xml --coverage-src ./src" TESTER_RUNTIME="phpdbg"
+      env: COMPOSER_EXTRA_ARGS="--prefer-stable" COVERAGE="--coverage ./coverage.xml --coverage-src ./src" TESTER_RUNTIME="phpdbg"
     - php: 7.1
       env: COMPOSER_EXTRA_ARGS="--prefer-stable" PHPSTAN=1
   exclude:
