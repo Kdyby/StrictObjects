@@ -10,12 +10,6 @@
 
 namespace Kdyby\StrictObjects;
 
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- * @author David Grudl <https://davidgrudl.com>
- */
 trait Scream
 {
 
@@ -30,10 +24,13 @@ trait Scream
 	{
 		$class = method_exists($this, $name) ? 'parent' : get_class($this);
 		$hint = Suggester::suggestMethod(get_class($this), $name);
-		throw new MemberAccessException("Call to undefined method $class::$name()" . ($hint ? ", did you mean $hint()?" : '.'));
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf(
+			'Call to undefined method %s::%s()%s',
+			$class,
+			$name,
+			$hint !== NULL ? sprintf(', did you mean %s()?', $hint) : '.'
+		));
 	}
-
-
 
 	/**
 	 * Call to undefined static method.
@@ -46,10 +43,13 @@ trait Scream
 	{
 		$class = get_called_class();
 		$hint = Suggester::suggestStaticFunction($class, $name);
-		throw new MemberAccessException("Call to undefined static function $class::$name()" . ($hint ? ", did you mean $hint()?" : '.'));
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf(
+			'Call to undefined static function %s::%s()%s',
+			$class,
+			$name,
+			$hint !== NULL ? sprintf(', did you mean %s()?', $hint) : '.'
+		));
 	}
-
-
 
 	/**
 	 * Returns property value. Do not call directly.
@@ -61,10 +61,13 @@ trait Scream
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
-		throw new MemberAccessException("Cannot read an undeclared property $class::\$$name" . ($hint ? ", did you mean \$$hint?" : '.'));
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf(
+			'Cannot read an undeclared property %s::$%s%s',
+			$class,
+			$name,
+			$hint !== NULL ? sprintf(', did you mean $%s?', $hint) : '.'
+		));
 	}
-
-
 
 	/**
 	 * Sets value of a property. Do not call directly.
@@ -72,44 +75,47 @@ trait Scream
 	 * @param string $name property name
 	 * @param mixed $value property value
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
-	 * @return void
 	 */
 	public function __set($name, $value)
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
-		throw new MemberAccessException("Cannot write to an undeclared property $class::\$$name" . ($hint ? ", did you mean \$$hint?" : '.'));
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf(
+			'Cannot write to an undeclared property %s::$%s%s',
+			$class,
+			$name,
+			$hint !== NULL ? sprintf(', did you mean $%s?', $hint) : '.'
+		));
 	}
-
-
 
 	/**
 	 * Is property defined?
 	 *
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
-	 * @return bool
 	 */
 	public function __isset($name)
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
-		throw new MemberAccessException("Cannot read an undeclared property $class::\$$name" . ($hint ? ", did you mean \$$hint?" : '.'));
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf(
+			'Cannot read an undeclared property %s::$%s%s',
+			$class,
+			$name,
+			$hint !== NULL ? sprintf(', did you mean $%s?', $hint) : '.'
+		));
 	}
-
-
 
 	/**
 	 * Access to undeclared property.
 	 *
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
-	 * @return void
 	 */
 	public function __unset($name)
 	{
 		$class = get_class($this);
-		throw new MemberAccessException("Cannot unset the property $class::\$$name.");
+		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf('Cannot unset the property %s::$%s.', $class, $name));
 	}
 
 }

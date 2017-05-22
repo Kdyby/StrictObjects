@@ -15,9 +15,7 @@ interface Exception
 
 }
 
-
-
-class MemberAccessException extends \LogicException implements Exception
+class MemberAccessException extends \LogicException implements \Kdyby\StrictObjects\Exception
 {
 
 }

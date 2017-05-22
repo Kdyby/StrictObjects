@@ -10,50 +10,40 @@
 
 namespace KdybyTests\StrictObjects;
 
-use Kdyby\StrictObjects\Scream;
-
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
 class SomeObject
 {
 
-	use Scream;
+	use \Kdyby\StrictObjects\Scream;
 
+	/**
+	 * @var mixed
+	 */
 	public $foo;
 
+	/**
+	 * @var mixed
+	 */
 	public $bar;
 
+	/**
+	 * @var mixed
+	 */
 	public static $nope;
-
-
 
 	public function someBar()
 	{
-
 	}
-
-
 
 	public function someFoo()
 	{
-
 	}
-
-
 
 	public static function staFoo()
 	{
-
 	}
-
-
 
 	public static function staBar()
 	{
-
 	}
 
 }

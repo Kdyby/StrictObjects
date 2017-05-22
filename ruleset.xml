@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="Kdyby/StrictObjects">
+	<rule ref="vendor/kdyby/coding-standard/KdybyCodingStandard/ruleset-5.6.xml"/>
+
+	<rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition">
+		<!-- nah, it's fine -->
+		<exclude-pattern>src/Suggester.php</exclude-pattern>
+	</rule>
+</ruleset>

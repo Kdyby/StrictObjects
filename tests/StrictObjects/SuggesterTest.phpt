@@ -4,24 +4,20 @@
  * @testCase
  */
 
-namespace KdybyTests\Doctrine\MagicAccessors;
+namespace KdybyTests\StrictObjects;
 
 use Kdyby\StrictObjects\Suggester;
-use Tester;
 use Tester\Assert;
 
-require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
-class SuggesterTest extends Tester\TestCase
+class SuggesterTest extends \Tester\TestCase
 {
 
 	/**
-	 * length  allowed ins/del  replacements
+	 * Suggestions table
+	 *
+	 * Length  Allowed ins/del  Replacements
 	 * -------------------------------------
 	 * 0       1                0
 	 * 1       1                1
@@ -32,6 +28,8 @@ class SuggesterTest extends Tester\TestCase
 	 * 6       2                2
 	 * 7       2                2
 	 * 8       3                2
+	 *
+	 * @return mixed[]
 	 */
 	public function dataSuggestion()
 	{
@@ -56,8 +54,6 @@ class SuggesterTest extends Tester\TestCase
 		];
 	}
 
-
-
 	/**
 	 * @dataProvider dataSuggestion
 	 */
@@ -65,8 +61,6 @@ class SuggesterTest extends Tester\TestCase
 	{
 		Assert::same($expected, Suggester::getSuggestion($items, $value));
 	}
-
-
 
 	public function dataSuggestMethod()
 	{
@@ -78,17 +72,13 @@ class SuggesterTest extends Tester\TestCase
 		];
 	}
 
-
-
 	/**
 	 * @dataProvider dataSuggestMethod
 	 */
 	public function testSuggestMethod($expected, $calledMethod)
 	{
-		Assert::same($expected, Suggester::suggestMethod('KdybyTests\StrictObjects\SomeObject', $calledMethod));
+		Assert::same($expected, Suggester::suggestMethod(SomeObject::class, $calledMethod));
 	}
-
-
 
 	public function dataSuggestStaticFunction()
 	{
@@ -98,17 +88,13 @@ class SuggesterTest extends Tester\TestCase
 		];
 	}
 
-
-
 	/**
 	 * @dataProvider dataSuggestStaticFunction
 	 */
 	public function testSuggestStaticFunction($expected, $calledFunction)
 	{
-		Assert::same($expected, Suggester::suggestStaticFunction('KdybyTests\StrictObjects\SomeObject', $calledFunction));
+		Assert::same($expected, Suggester::suggestStaticFunction(SomeObject::class, $calledFunction));
 	}
-
-
 
 	public function dataSuggestProperty()
 	{
@@ -118,18 +104,14 @@ class SuggesterTest extends Tester\TestCase
 		];
 	}
 
-
-
 	/**
 	 * @dataProvider dataSuggestProperty
 	 */
 	public function testSuggestProperty($expected, $accessedProperty)
 	{
-		Assert::same($expected, Suggester::suggestProperty('KdybyTests\StrictObjects\SomeObject', $accessedProperty));
+		Assert::same($expected, Suggester::suggestProperty(SomeObject::class, $accessedProperty));
 	}
 
 }
-
-
 
 (new SuggesterTest())->run();

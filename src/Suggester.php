@@ -10,10 +10,11 @@
 
 namespace Kdyby\StrictObjects;
 
-
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
- * @author Filip Procházka <filip@prochazka.su>
  * @internal
  */
 final class Suggester
@@ -26,17 +27,15 @@ final class Suggester
 	 */
 	public static function suggestMethod($class, $method)
 	{
-		$rc = new \ReflectionClass($class);
+		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
 			array_diff(
-				$rc->getMethods(\ReflectionMethod::IS_PUBLIC),
-				$rc->getMethods(\ReflectionMethod::IS_STATIC)
+				$rc->getMethods(ReflectionMethod::IS_PUBLIC),
+				$rc->getMethods(ReflectionMethod::IS_STATIC)
 			),
 			$method
 		);
 	}
-
-
 
 	/**
 	 * @param string $class
@@ -45,17 +44,15 @@ final class Suggester
 	 */
 	public static function suggestStaticFunction($class, $method)
 	{
-		$rc = new \ReflectionClass($class);
+		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
 			array_intersect(
-				$rc->getMethods(\ReflectionMethod::IS_PUBLIC),
-				$rc->getMethods(\ReflectionMethod::IS_STATIC)
+				$rc->getMethods(ReflectionMethod::IS_PUBLIC),
+				$rc->getMethods(ReflectionMethod::IS_STATIC)
 			),
 			$method
 		);
 	}
-
-
 
 	/**
 	 * @param string $class
@@ -64,23 +61,19 @@ final class Suggester
 	 */
 	public static function suggestProperty($class, $name)
 	{
-		$rc = new \ReflectionClass($class);
+		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
 			array_diff(
-				$rc->getProperties(\ReflectionMethod::IS_PUBLIC),
-				$rc->getProperties(\ReflectionMethod::IS_STATIC)
+				$rc->getProperties(ReflectionMethod::IS_PUBLIC),
+				$rc->getProperties(ReflectionMethod::IS_STATIC)
 			),
 			$name
 		);
 	}
 
-
-
 	/**
 	 * Finds the best suggestion (for 8-bit encoding).
 	 *
-	 * @author David Grudl (https://davidgrudl.com)
-	 * @license See https://nette.org/en/license
 	 * @return string|NULL
 	 * @internal
 	 */
@@ -91,7 +84,8 @@ final class Suggester
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
 		foreach (array_unique($items, SORT_REGULAR) as $item) {
 			/** @var \Reflector|string $item */
-			$item = ($item instanceof \ReflectionProperty || $item instanceof \ReflectionMethod) ? $item->getName() : $item;
+			$item = ($item instanceof ReflectionProperty || $item instanceof ReflectionMethod) ? $item->getName() : $item;
+
 			if ($item !== $value && (
 					($len = levenshtein($item, $value, 10, 11, 10)) < $min
 					|| ($len = levenshtein(preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) < $min

@@ -32,8 +32,11 @@
 		]
 	},
 	"autoload-dev": {
+		"psr-4": {
+			"KdybyTests\\StrictObjects\\": "tests/StrictObjects/"
+		},
 		"classmap": [
-			"tests"
+			"tests/StrictObjects/"
 		]
 	},
 	"extra": {
