@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * This file is part of the Kdyby (http://www.kdyby.org)
  *
@@ -30,19 +32,19 @@ class SomeObject
 	 */
 	public static $nope;
 
-	public function someBar()
+	public function someBar(): void
 	{
 	}
 
-	public function someFoo()
+	public function someFoo(): void
 	{
 	}
 
-	public static function staFoo()
+	public static function staFoo(): void
 	{
 	}
 
-	public static function staBar()
+	public static function staBar(): void
 	{
 	}
 
