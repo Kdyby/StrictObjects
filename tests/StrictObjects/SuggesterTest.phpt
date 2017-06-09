@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @testCase
  */
@@ -29,9 +31,9 @@ class SuggesterTest extends \Tester\TestCase
 	 * 7       2                2
 	 * 8       3                2
 	 *
-	 * @return mixed[]
+	 * @return mixed[][]|NULL[][]
 	 */
-	public function dataSuggestion()
+	public function dataSuggestion(): array
 	{
 		return [
 			[NULL, [], ''],
@@ -55,14 +57,20 @@ class SuggesterTest extends \Tester\TestCase
 	}
 
 	/**
+	 * @param string|null $expected
+	 * @param string[] $items
+	 *
 	 * @dataProvider dataSuggestion
 	 */
-	public function testGetSuggestion($expected, $items, $value)
+	public function testGetSuggestion(?string $expected, array $items, string $value): void
 	{
 		Assert::same($expected, Suggester::getSuggestion($items, $value));
 	}
 
-	public function dataSuggestMethod()
+	/**
+	 * @return mixed[][]|NULL[][]
+	 */
+	public function dataSuggestMethod(): array
 	{
 		return [
 			['someBar', 'someBaz'],
@@ -75,12 +83,15 @@ class SuggesterTest extends \Tester\TestCase
 	/**
 	 * @dataProvider dataSuggestMethod
 	 */
-	public function testSuggestMethod($expected, $calledMethod)
+	public function testSuggestMethod(?string $expected, string $calledMethod): void
 	{
 		Assert::same($expected, Suggester::suggestMethod(SomeObject::class, $calledMethod));
 	}
 
-	public function dataSuggestStaticFunction()
+	/**
+	 * @return mixed[][]|NULL[][]
+	 */
+	public function dataSuggestStaticFunction(): array
 	{
 		return [
 			['staBar', 'staBaz'],
@@ -91,12 +102,15 @@ class SuggesterTest extends \Tester\TestCase
 	/**
 	 * @dataProvider dataSuggestStaticFunction
 	 */
-	public function testSuggestStaticFunction($expected, $calledFunction)
+	public function testSuggestStaticFunction(?string $expected, string $calledFunction): void
 	{
 		Assert::same($expected, Suggester::suggestStaticFunction(SomeObject::class, $calledFunction));
 	}
 
-	public function dataSuggestProperty()
+	/**
+	 * @return string[][]|NULL[][]
+	 */
+	public function dataSuggestProperty(): array
 	{
 		return [
 			['bar', 'baz'],
@@ -107,7 +121,7 @@ class SuggesterTest extends \Tester\TestCase
 	/**
 	 * @dataProvider dataSuggestProperty
 	 */
-	public function testSuggestProperty($expected, $accessedProperty)
+	public function testSuggestProperty(?string $expected, string $accessedProperty): void
 	{
 		Assert::same($expected, Suggester::suggestProperty(SomeObject::class, $accessedProperty));
 	}
