@@ -1,41 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KdybyTests\StrictObjects;
+
+use Kdyby\StrictObjects\Scream;
 
 class SomeObject
 {
+    use Scream;
 
-	use \Kdyby\StrictObjects\Scream;
+    /** @var mixed */
+    public $foo;
 
-	/**
-	 * @var mixed
-	 */
-	public $foo;
+    /** @var mixed */
+    public $bar;
 
-	/**
-	 * @var mixed
-	 */
-	public $bar;
+    /** @var mixed */
+    public static $nope;
 
-	/**
-	 * @var mixed
-	 */
-	public static $nope;
+    public function someBar() : void
+    {
+    }
 
-	public function someBar()
-	{
-	}
+    public function someFoo() : void
+    {
+    }
 
-	public function someFoo()
-	{
-	}
+    public static function staFoo() : void
+    {
+    }
 
-	public static function staFoo()
-	{
-	}
-
-	public static function staBar()
-	{
-	}
-
+    public static function staBar() : void
+    {
+    }
 }

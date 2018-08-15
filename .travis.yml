@@ -69,7 +69,7 @@ jobs:
 
     - stage: Code Quality
       env: CODING_STANDARD
-      script: vendor/bin/phpcs --standard=ruleset.xml --encoding=utf-8 -sp src/ tests/
+      script: vendor/bin/phpcs
 
     - stage: Code Quality
       env: STATIC_ANALYSIS
