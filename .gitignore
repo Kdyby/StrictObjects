@@ -3,3 +3,5 @@
 /.phpcs-cache
 /phpcs.xml
 /phpstan.neon
+/phpunit.xml
+/coverage.xml

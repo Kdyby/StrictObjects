@@ -29,9 +29,9 @@ install: travis_retry composer -n update --prefer-dist
 script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
-       vendor/bin/tester -s -d zend_extension=xdebug --coverage ./coverage.xml --coverage-src src/ tests/
+       vendor/bin/phpunit --coverage-text --coverage-clover coverage.xml tests/
     else
-       vendor/bin/tester -s tests/
+       vendor/bin/phpunit tests/
     fi
 
 after_script:
