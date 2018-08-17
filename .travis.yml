@@ -73,7 +73,7 @@ jobs:
 
     - stage: Code Quality
       env: STATIC_ANALYSIS
-      script: vendor/bin/phpstan.phar analyse --ansi --no-progress -l 7 -c phpstan.neon src/ tests/
+      script: vendor/bin/phpstan analyse
 
 after_failure:
   - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'

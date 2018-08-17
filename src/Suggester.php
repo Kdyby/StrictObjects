@@ -7,7 +7,6 @@ namespace Kdyby\StrictObjects;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
-use Reflector;
 use const SORT_REGULAR;
 use function array_diff;
 use function array_intersect;
@@ -71,7 +70,6 @@ final class Suggester
         $best = null;
         $min  = (strlen($value) / 4 + 1) * 10 + .1;
         foreach (array_unique($items, SORT_REGULAR) as $item) {
-            /** @var Reflector|string $item */
             $item = ($item instanceof ReflectionProperty || $item instanceof ReflectionMethod) ? $item->getName() : $item;
 
             if ($item === $value || (
