@@ -57,7 +57,7 @@ trait Scream
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function &__get($name)
+	public function __get($name)
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
