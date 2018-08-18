@@ -6,10 +6,12 @@ namespace Kdyby\StrictObjects;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionObject;
 use ReflectionProperty;
 use const SORT_REGULAR;
 use function array_diff;
 use function array_intersect;
+use function array_map;
 use function array_unique;
 use function levenshtein;
 use function preg_replace;
@@ -20,70 +22,113 @@ use function strlen;
  */
 final class Suggester
 {
-    public static function suggestMethod(string $class, string $method) : ?string
+    public static function suggestProperty(object $object, string $property) : ?string
     {
-        $rc = new ReflectionClass($class);
-        return self::getSuggestion(
+        $reflection = new ReflectionObject($object);
+
+        return self::getPropertySuggestion(
             array_diff(
-                $rc->getMethods(ReflectionMethod::IS_PUBLIC),
-                $rc->getMethods(ReflectionMethod::IS_STATIC)
+                $reflection->getProperties(ReflectionMethod::IS_PUBLIC),
+                $reflection->getProperties(ReflectionMethod::IS_STATIC)
+            ),
+            $property
+        );
+    }
+
+    public static function suggestInstanceMethod(object $object, string $method) : ?string
+    {
+        $reflection = new ReflectionObject($object);
+
+        return self::getMethodSugestion(
+            array_diff(
+                $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
+                $reflection->getMethods(ReflectionMethod::IS_STATIC)
             ),
             $method
         );
     }
 
-    public static function suggestStaticFunction(string $class, string $method) : ?string
+    public static function suggestStaticMethod(string $class, string $method) : ?string
     {
-        $rc = new ReflectionClass($class);
-        return self::getSuggestion(
+        $reflection = new ReflectionClass($class);
+
+        return self::getMethodSugestion(
             array_intersect(
-                $rc->getMethods(ReflectionMethod::IS_PUBLIC),
-                $rc->getMethods(ReflectionMethod::IS_STATIC)
+                $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
+                $reflection->getMethods(ReflectionMethod::IS_STATIC)
             ),
             $method
-        );
-    }
-
-    public static function suggestProperty(string $class, string $name) : ?string
-    {
-        $rc = new ReflectionClass($class);
-        return self::getSuggestion(
-            array_diff(
-                $rc->getProperties(ReflectionMethod::IS_PUBLIC),
-                $rc->getProperties(ReflectionMethod::IS_STATIC)
-            ),
-            $name
         );
     }
 
     /**
+     * @param ReflectionProperty[] $properties
+     */
+    private static function getPropertySuggestion(array $properties, string $name) : ?string
+    {
+        return self::getSuggestion(
+            array_map(
+                static function (ReflectionProperty $property) : string {
+                    return $property->getName();
+                },
+                $properties
+            ),
+            $name,
+            static function (string $name) : string {
+                return $name;
+            }
+        );
+    }
+
+    /**
+     * @param ReflectionMethod[] $methods
+     */
+    private static function getMethodSugestion(array $methods, string $name) : ?string
+    {
+        return self::getSuggestion(
+            array_map(
+                static function (ReflectionMethod $method) : string {
+                    return $method->getName();
+                },
+                $methods
+            ),
+            $name,
+            static function (string $name) : string {
+                return preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
+            }
+        );
+    }
+
+
+    /**
      * Finds the best suggestion (for 8-bit encoding).
      *
-     * @param ReflectionProperty[]|ReflectionMethod[]|string[] $items
-     * @param mixed                                            $value
-     *
-     * @internal
+     * @param string[]                  $candidateNames
+     * @param mixed                     $name
+     * @param callable(string) : string $normalizer
      */
-    public static function getSuggestion(array $items, $value) : ?string
+    private static function getSuggestion(array $candidateNames, $name, callable $normalizer) : ?string
     {
-        $norm = preg_replace($re = '#^(get|set|has|is|add)(?=[A-Z])#', '', $value);
-        $best = null;
-        $min  = (strlen($value) / 4 + 1) * 10 + .1;
-        foreach (array_unique($items, SORT_REGULAR) as $item) {
-            $item = ($item instanceof ReflectionProperty || $item instanceof ReflectionMethod) ? $item->getName() : $item;
+        $normalizedName = $normalizer($name);
+        $best           = null;
+        $min            = (strlen($name) / 4 + 1) * 10 + .1;
 
-            if ($item === $value || (
-                    ($len = levenshtein($item, $value, 10, 11, 10)) >= $min
-                    && ($len = levenshtein(preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) >= $min
-                )
-            ) {
+        foreach (array_unique($candidateNames, SORT_REGULAR) as $candidateName) {
+            if ($candidateName === $name) {
                 continue;
             }
 
-            $min = $len;
-            /** @var string $best */
-            $best = $item;
+            $realDistance       = levenshtein($candidateName, $name, 10, 11, 10);
+            $normalizedDistance = levenshtein($normalizer($candidateName), $normalizedName, 10, 11, 10) + 20;
+
+            if ($realDistance >= $min && $normalizedDistance >= $min) {
+                continue;
+            }
+
+            $min  = $realDistance < $min ? $realDistance : $normalizedDistance;
+            $best = $candidateName;
         }
+
         return $best;
     }
 }
