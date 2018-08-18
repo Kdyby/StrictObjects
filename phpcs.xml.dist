@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset>
+    <arg name="basepath" value="."/>
+    <arg name="extensions" value="php,phpt"/>
+    <arg name="parallel" value="80"/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+
+    <!-- Ignore warnings, show progress of the run and show sniff names -->
+    <arg value="nps"/>
+
+    <file>src/</file>
+    <file>tests/</file>
+
+    <rule ref="Doctrine"/>
+
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>src/exceptions.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Classes.ClassFileName">
+        <exclude-pattern>src/exceptions.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming">
+        <exclude-pattern>src/exceptions.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition">
+        <exclude-pattern>src/Suggester.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
+        <exclude-pattern>tests/StrictObjects/ScreamTest.phpt</exclude-pattern>
+        <exclude-pattern>tests/StrictObjects/SuggesterTest.phpt</exclude-pattern>
+    </rule>
+</ruleset>

@@ -1,54 +1,79 @@
 language: php
-
 sudo: false
+dist: trusty
 
 cache:
-    directories:
-        - $HOME/.composer/cache
+  directories:
+    - $HOME/.composer/cache
 
 php:
-  - 5.6
-  - 7.0
-  - 7.1
   - 7.2
   - nightly
 
-env:
-  - # dev
-  - COMPOSER_EXTRA_ARGS="--prefer-stable"
-  - COMPOSER_EXTRA_ARGS="--prefer-lowest --prefer-stable"
+before_install:
+  - |
+    if [ "x$COVERAGE" != "xyes" ]; then
+      mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || true
+    fi
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.2
-      env: COMPOSER_EXTRA_ARGS="--prefer-stable" COVERAGE="--coverage ./coverage.xml --coverage-src ./src" TESTER_RUNTIME="phpdbg"
-    - php: 7.2
-      env: COMPOSER_EXTRA_ARGS="--prefer-stable" PHPSTAN=1
-    - php: 7.2
-      env: COMPOSER_EXTRA_ARGS="--prefer-stable" CODING_STANDARD=1
-  exclude:
-    - php: 7.2
-      env: COMPOSER_EXTRA_ARGS="--prefer-stable"
-  allow_failures:
-    - env:
-    - php: nightly
+before_script:
+  - if [[ "$DB" == "mysql" || "$DB" == "mysqli" || "$DB" == *"mariadb"* ]]; then mysql < tests/travis/create-mysql-schema.sql; fi;
+  - |
+    if [ "x$COVERAGE" == "xyes" ] && [[ ! $(php -m | grep -si xdebug) ]]; then
+      echo "xdebug is required for coverage"
+      exit 1
+    fi
 
-install:
-  - if [ "$CODING_STANDARD" = "1" ]; then composer require --dev --no-update kdyby/coding-standard:^1.0@dev; fi
-  - if [ "$PHPSTAN" = "1" ]; then composer require --dev --no-update phpstan/phpstan-shim:^0.7; fi
-  - travis_retry composer update --no-interaction --no-suggest --no-progress --prefer-dist $COMPOSER_EXTRA_ARGS
-  - travis_retry composer create-project --no-interaction jakub-onderka/php-parallel-lint /tmp/php-parallel-lint
-  - if [ "$COVERAGE" != "" ]; then travis_retry wget -O /tmp/coveralls.phar https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar; fi
+install: travis_retry composer -n update --prefer-dist
 
 script:
-  - vendor/bin/tester $COVERAGE -s -p ${TESTER_RUNTIME:-php} ./tests/
-  - php /tmp/php-parallel-lint/parallel-lint.php -e php,phpt --exclude vendor .
-  - if [ "$PHPSTAN" = "1" ]; then php vendor/phpstan/phpstan-shim/phpstan.phar analyse --ansi --no-progress -l7 -c phpstan.neon src tests; fi
-  - if [ "$CODING_STANDARD" = "1" ]; then php vendor/bin/phpcs --standard=ruleset.xml --encoding=utf-8 -sp src tests; fi
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+       vendor/bin/tester -s -d zend_extension=xdebug --coverage ./coverage.xml --coverage-src src/ tests/
+    else
+       vendor/bin/tester -s tests/
+    fi
 
 after_script:
-  - if [ "$COVERAGE" != "" ]; then php /tmp/coveralls.phar --verbose --config tests/.coveralls.yml || true; fi
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+      travis_retry wget -O /tmp/coveralls.phar https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+      php /tmp/coveralls.phar --verbose --config tests/.coveralls.yml || true
+    fi
+
+jobs:
+  allow_failures:
+    - php: nightly
+    - env: DEPENDENCIES=dev
+
+  exclude:
+    - php: 7.2
+
+  include:
+    - stage: Test
+      env: COVERAGE=yes
+
+    - stage: Test
+      env: DEPENDENCIES=lowest
+      install: travis_retry composer update -n --prefer-lowest --prefer-dist
+
+    - stage: Test
+      env: DEPENDENCIES=dev
+      install:
+        - composer config minimum-stability dev
+        - travis_retry composer update -n --prefer-dist
+
+    - stage: Code Quality
+      env: LINT
+      script: vendor/bin/parallel-lint -e php,phpt src/ tests/
+
+    - stage: Code Quality
+      env: CODING_STANDARD
+      script: vendor/bin/phpcs
+
+    - stage: Code Quality
+      env: STATIC_ANALYSIS
+      script: vendor/bin/phpstan analyse
 
 after_failure:
   - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'
