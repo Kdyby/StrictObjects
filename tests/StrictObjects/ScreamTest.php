@@ -109,16 +109,10 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider propertyNamesProvider()
      */
-    public function testMagicIsset(string $propertyName, ?string $suggestion) : void
+    public function testMagicIsset(string $propertyName) : void
     {
-        $message = $suggestion !== null
-            ? sprintf('Cannot check existence of an undeclared property %s::$%s, did you mean $%s?', SomeObject::class, $propertyName, $suggestion)
-            : sprintf('Cannot check existence of an undeclared property %s::$%s.', SomeObject::class, $propertyName);
-
-        $this->expectException(UndefinedProperty::class);
-        $this->expectExceptionMessage($message);
-
-        isset($this->object->$propertyName);
+        self::assertFalse($this->object->__isset($propertyName));
+        self::assertFalse(isset($this->object->$propertyName));
     }
 
     /**

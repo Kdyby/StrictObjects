@@ -8,6 +8,6 @@ trait PropertyScreamer
 {
     use PropertyReadScreamer;
     use PropertyWriteScreamer;
-    use PropertyExistsScreamer;
+    use PropertyExistsIgnorer;
     use PropertyRemovalScreamer;
 }

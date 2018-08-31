@@ -21,11 +21,6 @@ final class UndefinedProperty extends LogicException implements Exception
         return new self(self::formatMessageWithSuggestion($object, $name, 'write to'));
     }
 
-    public static function exists(object $object, string $name) : self
-    {
-        return new self(self::formatMessageWithSuggestion($object, $name, 'check existence of'));
-    }
-
     public static function removal(object $object, string $name) : self
     {
         return new self(self::formatMessageWithoutSuggestion($object, $name, 'unset'));
