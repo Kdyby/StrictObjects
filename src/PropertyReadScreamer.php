@@ -13,7 +13,7 @@ trait PropertyReadScreamer
      *
      * @throws UndefinedProperty
      */
-    public function __get(string $name)
+    public function &__get(string $name)
     {
         throw UndefinedProperty::read($this, $name);
     }
