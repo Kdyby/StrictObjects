@@ -74,21 +74,24 @@ final class Suggester
 	/**
 	 * Finds the best suggestion (for 8-bit encoding).
 	 *
+	 * @param array $items
+	 * @param string $value
 	 * @return string|NULL
 	 * @internal
 	 */
 	public static function getSuggestion(array $items, $value)
 	{
+		/** @var string $norm */
 		$norm = preg_replace($re = '#^(get|set|has|is|add)(?=[A-Z])#', '', $value);
 		$best = NULL;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		foreach (array_unique($items, SORT_REGULAR) as $item) {
-			/** @var \Reflector|string $item */
-			$item = ($item instanceof ReflectionProperty || $item instanceof ReflectionMethod) ? $item->getName() : $item;
+		foreach (array_unique($items, SORT_REGULAR) as $reflector) {
+			/** @var \ReflectionProperty|\ReflectionMethod|string $reflector */
+			$item = ($reflector instanceof ReflectionProperty || $reflector instanceof ReflectionMethod) ? $reflector->getName() : (string) $reflector;
 
 			if ($item !== $value && (
 					($len = levenshtein($item, $value, 10, 11, 10)) < $min
-					|| ($len = levenshtein(preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) < $min
+					|| ($len = levenshtein((string) preg_replace($re, '', $item), $norm, 10, 11, 10) + 20) < $min
 				)
 			) {
 				$min = $len;
