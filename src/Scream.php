@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * This file is part of the Kdyby (http://www.kdyby.org)
  *
@@ -20,7 +22,7 @@ trait Scream
 	 * @param array $args arguments
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __call($name, $args)
+	public function __call(string $name, array $args)
 	{
 		$class = method_exists($this, $name) ? 'parent' : get_class($this);
 		$hint = Suggester::suggestMethod(get_class($this), $name);
@@ -39,7 +41,7 @@ trait Scream
 	 * @param array $args arguments
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public static function __callStatic($name, $args)
+	public static function __callStatic(string $name, array $args)
 	{
 		$class = get_called_class();
 		$hint = Suggester::suggestStaticFunction($class, $name);
@@ -57,7 +59,7 @@ trait Scream
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function &__get($name)
+	public function &__get(string $name)
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
@@ -76,7 +78,7 @@ trait Scream
 	 * @param mixed $value property value
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, $value)
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
@@ -94,7 +96,7 @@ trait Scream
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __isset($name)
+	public function __isset(string $name): bool
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
@@ -112,7 +114,7 @@ trait Scream
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __unset($name)
+	public function __unset(string $name)
 	{
 		$class = get_class($this);
 		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf('Cannot unset the property %s::$%s.', $class, $name));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * This file is part of the Kdyby (http://www.kdyby.org)
  *
@@ -20,12 +22,7 @@ use ReflectionProperty;
 final class Suggester
 {
 
-	/**
-	 * @param string $class
-	 * @param string $method
-	 * @return NULL|string
-	 */
-	public static function suggestMethod($class, $method)
+	public static function suggestMethod(string $class, string $method): ?string
 	{
 		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
@@ -37,12 +34,7 @@ final class Suggester
 		);
 	}
 
-	/**
-	 * @param string $class
-	 * @param string $method
-	 * @return NULL|string
-	 */
-	public static function suggestStaticFunction($class, $method)
+	public static function suggestStaticFunction(string $class, string $method): ?string
 	{
 		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
@@ -54,12 +46,7 @@ final class Suggester
 		);
 	}
 
-	/**
-	 * @param string $class
-	 * @param string $name
-	 * @return NULL|string
-	 */
-	public static function suggestProperty($class, $name)
+	public static function suggestProperty(string $class, string $name): ?string
 	{
 		$rc = new ReflectionClass($class);
 		return self::getSuggestion(
@@ -74,12 +61,9 @@ final class Suggester
 	/**
 	 * Finds the best suggestion (for 8-bit encoding).
 	 *
-	 * @param array $items
-	 * @param string $value
-	 * @return string|NULL
 	 * @internal
 	 */
-	public static function getSuggestion(array $items, $value)
+	public static function getSuggestion(array $items, string $value): ?string
 	{
 		/** @var string $norm */
 		$norm = preg_replace($re = '#^(get|set|has|is|add)(?=[A-Z])#', '', $value);
