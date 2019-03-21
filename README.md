@@ -3,7 +3,7 @@ Kdyby/StrictObjects
 
 Simple trait to make your class strict, when calling or accessing undefined member (property or method).
 
-[![Build Status](https://travis-ci.org/Kdyby/StrictObjects.svg?branch=master)](https://travis-ci.org/Kdyby/StrictObjects)
+[![Build Status](https://travis-ci.org/Kdyby/StrictObjects.svg?branch=1.0)](https://travis-ci.org/Kdyby/StrictObjects)
 [![Downloads this Month](https://img.shields.io/packagist/dm/kdyby/strict-objects.svg)](https://packagist.org/packages/kdyby/strict-objects)
 [![Latest stable](https://img.shields.io/packagist/v/kdyby/strict-objects.svg)](https://packagist.org/packages/kdyby/strict-objects)
 [![Coverage Status](https://coveralls.io/repos/github/Kdyby/StrictObjects/badge.svg?branch=master)](https://coveralls.io/github/Kdyby/StrictObjects?branch=master)
@@ -16,7 +16,7 @@ Installation
 The best way to install Kdyby/StrictObjects is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require kdyby/strict-objects
+$ composer require kdyby/strict-objects:^1.0
 ```
 
 Usage
