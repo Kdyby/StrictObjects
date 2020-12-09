@@ -78,7 +78,7 @@ trait Scream
 	 * @param mixed $value property value
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __set(string $name, $value)
+	public function __set(string $name, $value): void
 	{
 		$class = get_class($this);
 		$hint = Suggester::suggestProperty($class, $name);
@@ -114,7 +114,7 @@ trait Scream
 	 * @param string $name property name
 	 * @throws \Kdyby\StrictObjects\MemberAccessException
 	 */
-	public function __unset(string $name)
+	public function __unset(string $name): void
 	{
 		$class = get_class($this);
 		throw new \Kdyby\StrictObjects\MemberAccessException(sprintf('Cannot unset the property %s::$%s.', $class, $name));
