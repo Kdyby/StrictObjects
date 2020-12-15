@@ -20,7 +20,7 @@
 		"php": "^7.1"
 	},
 	"require-dev": {
-		"nette/tester": "~1.7",
+		"nette/tester": "~2.3.1",
 		"kdyby/coding-standard": "^1.0@dev",
 		"phpstan/phpstan-shim": "^0.11",
 		"jakub-onderka/php-parallel-lint": "^1.0"
