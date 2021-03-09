@@ -1,0 +1,75 @@
+name: Build and tests
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer
+          coverage: xdebug
+
+      - name: Composer
+        run: |
+          composer validate
+          composer install
+
+      - name: Unit tests
+        run: |
+          vendor/bin/phpunit tests/
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: php-${{ matrix.php-versions }}
+          parallel: true
+
+  quality:
+    name: Quality and standards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer
+          coverage: none
+
+      - name: Composer
+        run: |
+          composer validate
+          composer install
+
+      - name: Code Quality
+        run: |
+          vendor/bin/parallel-lint -e php,phpt src/ tests/
+
+      - name: Coding standard
+        run: |
+          vendor/bin/phpcs
+
+      - name: PHPStan
+        run: |
+          vendor/bin/phpstan analyse
