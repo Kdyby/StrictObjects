@@ -10,7 +10,7 @@ php:
   - 7.2
   - 7.3
   - 7.4
-  - nightly
+  - 8.0
 
 before_install:
   - |
@@ -43,10 +43,6 @@ after_script:
     fi
 
 jobs:
-  allow_failures:
-    - php: nightly
-    - env: DEPENDENCIES=dev
-
   exclude:
     - php: 7.2
 

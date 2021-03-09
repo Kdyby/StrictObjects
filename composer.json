@@ -17,14 +17,14 @@
         "issues": "https://github.com/Kdyby/StrictObjects/issues"
     },
     "require": {
-        "php": "^7.2"
+        "php": "^7.2 || ^8.0"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^4.0",
+        "doctrine/coding-standard": "8.2.*",
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "phpstan/phpstan": "^0.10.3",
-        "phpunit/phpunit": "^7.3",
-        "squizlabs/php_codesniffer": "3.3.1"
+        "phpstan/phpstan": "0.12.*",
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.5.5"
     },
     "autoload": {
         "psr-4": {
