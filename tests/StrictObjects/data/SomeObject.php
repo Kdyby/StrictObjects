@@ -19,19 +19,19 @@ class SomeObject
     /** @var mixed */
     public static $nope;
 
-    public function someBar() : void
+    public function someBar(): void
     {
     }
 
-    public function someFoo() : void
+    public function someFoo(): void
     {
     }
 
-    public static function staFoo() : void
+    public static function staFoo(): void
     {
     }
 
-    public static function staBar() : void
+    public static function staBar(): void
     {
     }
 }

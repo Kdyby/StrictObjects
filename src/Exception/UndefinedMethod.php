@@ -6,12 +6,13 @@ namespace Kdyby\StrictObjects\Exception;
 
 use Kdyby\StrictObjects\Suggester;
 use LogicException;
+
 use function get_class;
 use function sprintf;
 
 final class UndefinedMethod extends LogicException implements MemberAccessException
 {
-    public static function instance(object $object, string $name) : self
+    public static function instance(object $object, string $name): self
     {
         return new self(
             self::formatMessage(
@@ -23,7 +24,7 @@ final class UndefinedMethod extends LogicException implements MemberAccessExcept
         );
     }
 
-    public static function static(string $class, string $name) : self
+    public static function static(string $class, string $name): self
     {
         return new self(
             self::formatMessage(
@@ -35,7 +36,7 @@ final class UndefinedMethod extends LogicException implements MemberAccessExcept
         );
     }
 
-    private static function formatMessage(string $class, string $name, string $type, ?string $hint) : string
+    private static function formatMessage(string $class, string $name, string $type, ?string $hint): string
     {
         $message = sprintf(
             'Call to an undefined %s method %s::%s()',

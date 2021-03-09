@@ -7,6 +7,7 @@ namespace KdybyTests\StrictObjects;
 use Kdyby\StrictObjects\Suggester;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+
 use function preg_replace;
 
 final class SuggesterTest extends TestCase
@@ -28,12 +29,12 @@ final class SuggesterTest extends TestCase
      *
      * @return mixed[]
      */
-    public function dataSuggestionProvider() : iterable
+    public function dataSuggestionProvider(): iterable
     {
-        $noopNormalizer        = function (string $s) : string {
+        $noopNormalizer        = static function (string $s): string {
             return $s;
         };
-        $unprefixingNormalizer = function (string $name) : string {
+        $unprefixingNormalizer = static function (string $name): string {
             return preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
         };
 
@@ -61,7 +62,7 @@ final class SuggesterTest extends TestCase
      *
      * @dataProvider dataSuggestionProvider()
      */
-    public function testGetSuggestion(?string $expected, array $items, string $value, callable $normalizer) : void
+    public function testGetSuggestion(?string $expected, array $items, string $value, callable $normalizer): void
     {
         $methodReflection = new ReflectionMethod(Suggester::class, 'getSuggestion');
         $methodReflection->setAccessible(true);
@@ -72,7 +73,7 @@ final class SuggesterTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function dataSuggestPropertyProvider() : iterable
+    public function dataSuggestPropertyProvider(): iterable
     {
         yield ['bar', 'baz'];
         yield [null, 'nupe']; // doesn't suggest static properties
@@ -81,7 +82,7 @@ final class SuggesterTest extends TestCase
     /**
      * @dataProvider dataSuggestPropertyProvider()
      */
-    public function testSuggestProperty(?string $expected, string $accessedProperty) : void
+    public function testSuggestProperty(?string $expected, string $accessedProperty): void
     {
         self::assertSame($expected, Suggester::suggestProperty(new SomeObject(), $accessedProperty));
     }
@@ -89,7 +90,7 @@ final class SuggesterTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function dataSuggestInstanceMethodProvider() : iterable
+    public function dataSuggestInstanceMethodProvider(): iterable
     {
         yield ['someBar', 'someBaz'];
         yield [null, 'bar'];
@@ -100,7 +101,7 @@ final class SuggesterTest extends TestCase
     /**
      * @dataProvider dataSuggestInstanceMethodProvider()
      */
-    public function testSuggestInstanceMethod(?string $expected, string $calledMethod) : void
+    public function testSuggestInstanceMethod(?string $expected, string $calledMethod): void
     {
         self::assertSame($expected, Suggester::suggestInstanceMethod(new SomeObject(), $calledMethod));
     }
@@ -108,7 +109,7 @@ final class SuggesterTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function dataSuggestStaticMethodProvider() : iterable
+    public function dataSuggestStaticMethodProvider(): iterable
     {
         yield ['staBar', 'staBaz'];
         yield [null, 'someBaz']; // doesn't suggest methods
@@ -117,7 +118,7 @@ final class SuggesterTest extends TestCase
     /**
      * @dataProvider dataSuggestStaticMethodProvider()
      */
-    public function testSuggestStaticFunction(?string $expected, string $calledFunction) : void
+    public function testSuggestStaticFunction(?string $expected, string $calledFunction): void
     {
         self::assertSame($expected, Suggester::suggestStaticMethod(SomeObject::class, $calledFunction));
     }

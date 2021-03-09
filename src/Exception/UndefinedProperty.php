@@ -6,32 +6,33 @@ namespace Kdyby\StrictObjects\Exception;
 
 use Kdyby\StrictObjects\Suggester;
 use LogicException;
+
 use function get_class;
 use function sprintf;
 
 final class UndefinedProperty extends LogicException implements Exception
 {
-    public static function read(object $object, string $name) : self
+    public static function read(object $object, string $name): self
     {
         return new self(self::formatMessageWithSuggestion($object, $name, 'read'));
     }
 
-    public static function write(object $object, string $name) : self
+    public static function write(object $object, string $name): self
     {
         return new self(self::formatMessageWithSuggestion($object, $name, 'write to'));
     }
 
-    public static function removal(object $object, string $name) : self
+    public static function removal(object $object, string $name): self
     {
         return new self(self::formatMessageWithoutSuggestion($object, $name, 'unset'));
     }
 
-    private static function formatMessageWithoutSuggestion(object $object, string $name, string $operation) : string
+    private static function formatMessageWithoutSuggestion(object $object, string $name, string $operation): string
     {
         return sprintf('%s.', self::formatMessage($object, $name, $operation));
     }
 
-    private static function formatMessageWithSuggestion(object $object, string $name, string $operation) : string
+    private static function formatMessageWithSuggestion(object $object, string $name, string $operation): string
     {
         $suggestion = Suggester::suggestProperty($object, $name);
 
@@ -46,7 +47,7 @@ final class UndefinedProperty extends LogicException implements Exception
         );
     }
 
-    private static function formatMessage(object $object, string $name, string $operation) : string
+    private static function formatMessage(object $object, string $name, string $operation): string
     {
         return sprintf(
             'Cannot %s an undeclared property %s::$%s',
