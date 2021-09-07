@@ -1,0 +1,23 @@
+name: 'Coding Standards'
+on: ['push', 'pull_request']
+jobs:
+    phpcs:
+        name: 'PHPCS'
+        runs-on: 'ubuntu-20.04'
+        strategy:
+            matrix:
+                php-version:
+                    - '8.0'
+        steps:
+            - name: 'Checkout'
+              uses: 'actions/checkout@v2'
+            - name: 'Setup PHP'
+              uses: 'shivammathur/setup-php@v2'
+              with:
+                  php-version: '${{ matrix.php-version }}'
+                  coverage: 'none'
+                  tools: 'cs2pr'
+            - name: 'Install dependencies'
+              uses: 'ramsey/composer-install@v1'
+            - name: 'Run PHPCS'
+              run: 'vendor/bin/phpcs -q --report=checkstyle | cs2pr'
