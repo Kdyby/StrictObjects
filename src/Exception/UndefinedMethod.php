@@ -7,7 +7,6 @@ namespace Kdyby\StrictObjects\Exception;
 use Kdyby\StrictObjects\Suggester;
 use LogicException;
 
-use function get_class;
 use function sprintf;
 
 final class UndefinedMethod extends LogicException implements MemberAccessException
@@ -16,7 +15,7 @@ final class UndefinedMethod extends LogicException implements MemberAccessExcept
     {
         return new self(
             self::formatMessage(
-                get_class($object),
+                $object::class,
                 $name,
                 'instance',
                 Suggester::suggestInstanceMethod($object, $name)

@@ -9,11 +9,9 @@ use Kdyby\StrictObjects\Exception\UndefinedProperty;
 trait PropertyWriteScreamer
 {
     /**
-     * @param mixed $value
-     *
      * @throws UndefinedProperty
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         throw UndefinedProperty::write($this, $name);
     }

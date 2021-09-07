@@ -12,8 +12,7 @@ use function sprintf;
 
 final class ScreamTest extends TestCase
 {
-    /** @var SomeObject */
-    private $object;
+    private SomeObject $object;
 
     protected function setUp(): void
     {

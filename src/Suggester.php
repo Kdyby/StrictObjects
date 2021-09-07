@@ -121,10 +121,9 @@ final class Suggester
      * Finds the best suggestion (for 8-bit encoding).
      *
      * @param string[]                  $candidateNames
-     * @param mixed                     $name
      * @param callable(string) : string $normalizer
      */
-    private static function getSuggestion(array $candidateNames, $name, callable $normalizer): ?string
+    private static function getSuggestion(array $candidateNames, mixed $name, callable $normalizer): ?string
     {
         $normalizedName = $normalizer($name);
         $best           = null;

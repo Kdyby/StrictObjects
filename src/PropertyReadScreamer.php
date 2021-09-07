@@ -9,11 +9,9 @@ use Kdyby\StrictObjects\Exception\UndefinedProperty;
 trait PropertyReadScreamer
 {
     /**
-     * @return mixed
-     *
      * @throws UndefinedProperty
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         throw UndefinedProperty::read($this, $name);
     }

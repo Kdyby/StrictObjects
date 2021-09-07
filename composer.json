@@ -17,7 +17,7 @@
         "issues": "https://github.com/Kdyby/StrictObjects/issues"
     },
     "require": {
-        "php": "^7.2"
+        "php": "^8.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0",

@@ -11,11 +11,9 @@ trait StaticMethodCallScreamer
     /**
      * @param mixed[] $args arguments
      *
-     * @return mixed
-     *
      * @throws UndefinedMethod
      */
-    public static function __callStatic(string $name, array $args)
+    public static function __callStatic(string $name, array $args): mixed
     {
         throw UndefinedMethod::static(static::class, $name);
     }

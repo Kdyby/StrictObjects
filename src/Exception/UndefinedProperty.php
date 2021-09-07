@@ -7,7 +7,6 @@ namespace Kdyby\StrictObjects\Exception;
 use Kdyby\StrictObjects\Suggester;
 use LogicException;
 
-use function get_class;
 use function sprintf;
 
 final class UndefinedProperty extends LogicException implements Exception
@@ -52,7 +51,7 @@ final class UndefinedProperty extends LogicException implements Exception
         return sprintf(
             'Cannot %s an undeclared property %s::$%s',
             $operation,
-            get_class($object),
+            $object::class,
             $name
         );
     }

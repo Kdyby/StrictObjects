@@ -10,14 +10,11 @@ class SomeObject
 {
     use Scream;
 
-    /** @var mixed */
-    public $foo;
+    public mixed $foo;
 
-    /** @var mixed */
-    public $bar;
+    public mixed $bar;
 
-    /** @var mixed */
-    public static $nope;
+    public static mixed $nope;
 
     public function someBar(): void
     {

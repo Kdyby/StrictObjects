@@ -7,9 +7,7 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 7.2
-  - 7.3
-  - 7.4
+  - 8.0
   - nightly
 
 before_install:
@@ -48,7 +46,7 @@ jobs:
     - env: DEPENDENCIES=dev
 
   exclude:
-    - php: 7.2
+    - php: 8.0
 
   include:
     - stage: Test

@@ -11,11 +11,9 @@ trait InstanceMethodCallScreamer
     /**
      * @param mixed[] $args arguments
      *
-     * @return mixed
-     *
      * @throws UndefinedMethod
      */
-    public function __call(string $name, array $args)
+    public function __call(string $name, array $args): mixed
     {
         throw UndefinedMethod::instance($this, $name);
     }
