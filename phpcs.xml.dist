@@ -29,4 +29,10 @@
     <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition">
         <exclude-pattern>src/Suggester.php</exclude-pattern>
     </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <properties>
+            <property name="enableNativeTypeHint" value="false"/>
+        </properties>
+    </rule>
 </ruleset>

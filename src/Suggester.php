@@ -9,8 +9,7 @@ use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
 use RuntimeException;
-use const PREG_NO_ERROR;
-use const SORT_REGULAR;
+
 use function array_diff;
 use function array_intersect;
 use function array_map;
@@ -22,12 +21,15 @@ use function preg_replace;
 use function sprintf;
 use function strlen;
 
+use const PREG_NO_ERROR;
+use const SORT_REGULAR;
+
 /**
  * @internal
  */
 final class Suggester
 {
-    public static function suggestProperty(object $object, string $property) : ?string
+    public static function suggestProperty(object $object, string $property): ?string
     {
         $reflection = new ReflectionObject($object);
 
@@ -40,7 +42,7 @@ final class Suggester
         );
     }
 
-    public static function suggestInstanceMethod(object $object, string $method) : ?string
+    public static function suggestInstanceMethod(object $object, string $method): ?string
     {
         $reflection = new ReflectionObject($object);
 
@@ -54,10 +56,9 @@ final class Suggester
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment
      * @phpstan-param class-string $class
      */
-    public static function suggestStaticMethod(string $class, string $method) : ?string
+    public static function suggestStaticMethod(string $class, string $method): ?string
     {
         $reflection = new ReflectionClass($class);
 
@@ -73,17 +74,17 @@ final class Suggester
     /**
      * @param ReflectionProperty[] $properties
      */
-    private static function getPropertySuggestion(array $properties, string $name) : ?string
+    private static function getPropertySuggestion(array $properties, string $name): ?string
     {
         return self::getSuggestion(
             array_map(
-                static function (ReflectionProperty $property) : string {
+                static function (ReflectionProperty $property): string {
                     return $property->getName();
                 },
                 $properties
             ),
             $name,
-            static function (string $name) : string {
+            static function (string $name): string {
                 return $name;
             }
         );
@@ -92,17 +93,17 @@ final class Suggester
     /**
      * @param ReflectionMethod[] $methods
      */
-    private static function getMethodSugestion(array $methods, string $name) : ?string
+    private static function getMethodSugestion(array $methods, string $name): ?string
     {
         return self::getSuggestion(
             array_map(
-                static function (ReflectionMethod $method) : string {
+                static function (ReflectionMethod $method): string {
                     return $method->getName();
                 },
                 $methods
             ),
             $name,
-            static function (string $name) : string {
+            static function (string $name): string {
                 $normalized = preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
 
                 if (preg_last_error() !== PREG_NO_ERROR) {
@@ -116,7 +117,6 @@ final class Suggester
         );
     }
 
-
     /**
      * Finds the best suggestion (for 8-bit encoding).
      *
@@ -124,7 +124,7 @@ final class Suggester
      * @param mixed                     $name
      * @param callable(string) : string $normalizer
      */
-    private static function getSuggestion(array $candidateNames, $name, callable $normalizer) : ?string
+    private static function getSuggestion(array $candidateNames, $name, callable $normalizer): ?string
     {
         $normalizedName = $normalizer($name);
         $best           = null;

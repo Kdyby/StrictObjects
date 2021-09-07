@@ -7,6 +7,7 @@ namespace KdybyTests\StrictObjects;
 use Kdyby\StrictObjects\Exception\UndefinedMethod;
 use Kdyby\StrictObjects\Exception\UndefinedProperty;
 use PHPUnit\Framework\TestCase;
+
 use function sprintf;
 
 final class ScreamTest extends TestCase
@@ -14,7 +15,7 @@ final class ScreamTest extends TestCase
     /** @var SomeObject */
     private $object;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->object = new SomeObject();
     }
@@ -22,7 +23,7 @@ final class ScreamTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function instanceMethodNamesProvider() : iterable
+    public function instanceMethodNamesProvider(): iterable
     {
         yield ['someBaZ', 'someBar'];
         yield ['totallyAlone', null];
@@ -31,7 +32,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider instanceMethodNamesProvider()
      */
-    public function testMagicCall(string $methodName, ?string $suggestion) : void
+    public function testMagicCall(string $methodName, ?string $suggestion): void
     {
         $message = $suggestion !== null
             ? sprintf('Call to an undefined instance method %s::%s(), did you mean %s()?', SomeObject::class, $methodName, $suggestion)
@@ -46,7 +47,7 @@ final class ScreamTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function staticMethodNamesProvider() : iterable
+    public function staticMethodNamesProvider(): iterable
     {
         yield ['staBaZ', 'staBar'];
         yield ['totallyAlone', null];
@@ -55,7 +56,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider staticMethodNamesProvider()
      */
-    public function testMagicStaticCall(string $methodName, ?string $suggestion) : void
+    public function testMagicStaticCall(string $methodName, ?string $suggestion): void
     {
         $message = $suggestion !== null
             ? sprintf('Call to an undefined static method %s::%s(), did you mean %s()?', SomeObject::class, $methodName, $suggestion)
@@ -70,7 +71,7 @@ final class ScreamTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function propertyNamesProvider() : iterable
+    public function propertyNamesProvider(): iterable
     {
         yield ['baz', 'bar'];
         yield ['totallyAlone', null];
@@ -79,7 +80,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider propertyNamesProvider()
      */
-    public function testMagicGet(string $propertyName, ?string $suggestion) : void
+    public function testMagicGet(string $propertyName, ?string $suggestion): void
     {
         $message = $suggestion !== null
             ? sprintf('Cannot read an undeclared property %s::$%s, did you mean $%s?', SomeObject::class, $propertyName, $suggestion)
@@ -94,7 +95,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider propertyNamesProvider()
      */
-    public function testMagicSet(string $propertyName, ?string $suggestion) : void
+    public function testMagicSet(string $propertyName, ?string $suggestion): void
     {
         $message = $suggestion !== null
             ? sprintf('Cannot write to an undeclared property %s::$%s, did you mean $%s?', SomeObject::class, $propertyName, $suggestion)
@@ -109,7 +110,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider propertyNamesProvider()
      */
-    public function testMagicIsset(string $propertyName) : void
+    public function testMagicIsset(string $propertyName): void
     {
         self::assertFalse($this->object->__isset($propertyName));
         self::assertFalse(isset($this->object->$propertyName));
@@ -118,7 +119,7 @@ final class ScreamTest extends TestCase
     /**
      * @dataProvider propertyNamesProvider()
      */
-    public function testMagicUnset(string $propertyName) : void
+    public function testMagicUnset(string $propertyName): void
     {
         $this->expectException(UndefinedProperty::class);
         $this->expectExceptionMessage(sprintf('Cannot unset an undeclared property %s::$%s.', SomeObject::class, $propertyName));

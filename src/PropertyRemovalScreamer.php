@@ -11,7 +11,7 @@ trait PropertyRemovalScreamer
     /**
      * @throws UndefinedProperty
      */
-    public function __unset(string $name) : void
+    public function __unset(string $name): void
     {
         throw UndefinedProperty::removal($this, $name);
     }

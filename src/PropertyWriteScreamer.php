@@ -13,7 +13,7 @@ trait PropertyWriteScreamer
      *
      * @throws UndefinedProperty
      */
-    public function __set(string $name, $value) : void
+    public function __set(string $name, $value): void
     {
         throw UndefinedProperty::write($this, $name);
     }
