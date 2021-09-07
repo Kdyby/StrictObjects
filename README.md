@@ -40,7 +40,7 @@ you can enable the behavior selectively by using specific traits:
 
  * `Kdyby\StrictObjects\PropertyReadScreamer`: Will throw when attempting to read an undeclared property.
  * `Kdyby\StrictObjects\PropertyWriteScreamer`: Will throw when attempting to write to an undeclared property.
- * `Kdyby\StrictObjects\PropertyExistsScreamer`: Will throw when attempting to check existence of an undeclared property.
+ * `Kdyby\StrictObjects\PropertyExistsIgnorer`: Will always return false when attempting to check existence of an undeclared property.
  * `Kdyby\StrictObjects\PropertyRemovalScreamer`: Will throw when attempting to unset an undeclared property.
  * `Kdyby\StrictObjects\InstanceMethodCallScreamer`: Will throw when attempting to call an undefined instance method.
  * `Kdyby\StrictObjects\StaticMethodCallScreamer`: Will throw when attempting to call an undefined static method.
