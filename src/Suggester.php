@@ -8,13 +8,18 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
+use RuntimeException;
+use const PREG_NO_ERROR;
 use const SORT_REGULAR;
 use function array_diff;
 use function array_intersect;
 use function array_map;
 use function array_unique;
+use function assert;
 use function levenshtein;
+use function preg_last_error;
 use function preg_replace;
+use function sprintf;
 use function strlen;
 
 /**
@@ -48,6 +53,10 @@ final class Suggester
         );
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment
+     * @phpstan-param class-string $class
+     */
     public static function suggestStaticMethod(string $class, string $method) : ?string
     {
         $reflection = new ReflectionClass($class);
@@ -94,7 +103,15 @@ final class Suggester
             ),
             $name,
             static function (string $name) : string {
-                return preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
+                $normalized = preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
+
+                if (preg_last_error() !== PREG_NO_ERROR) {
+                    throw new RuntimeException(sprintf('Error building method suggestion: %s', preg_last_error()));
+                }
+
+                assert($normalized !== null);
+
+                return $normalized;
             }
         );
     }

@@ -88,7 +88,7 @@ final class ScreamTest extends TestCase
         $this->expectException(UndefinedProperty::class);
         $this->expectExceptionMessage($message);
 
-        $this->object->$propertyName;
+        $this->object->$propertyName; /** @phpstan-ignore-line */
     }
 
     /**

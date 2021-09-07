@@ -7,6 +7,7 @@ namespace KdybyTests\StrictObjects;
 use Kdyby\StrictObjects\Suggester;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use function assert;
 use function preg_replace;
 
 final class SuggesterTest extends TestCase
@@ -34,7 +35,10 @@ final class SuggesterTest extends TestCase
             return $s;
         };
         $unprefixingNormalizer = function (string $name) : string {
-            return preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
+            $normalized = preg_replace('~^(?:get|set|has|is|add)(?=[A-Z])~', '', $name);
+            assert($normalized !== null);
+
+            return $normalized;
         };
 
         yield [null, [], '', $noopNormalizer];

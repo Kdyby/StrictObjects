@@ -23,6 +23,10 @@ final class UndefinedMethod extends LogicException implements MemberAccessExcept
         );
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment
+     * @phpstan-param class-string $class
+     */
     public static function static(string $class, string $name) : self
     {
         return new self(
@@ -35,6 +39,10 @@ final class UndefinedMethod extends LogicException implements MemberAccessExcept
         );
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment
+     * @phpstan-param class-string $class
+     */
     private static function formatMessage(string $class, string $name, string $type, ?string $hint) : string
     {
         $message = sprintf(
